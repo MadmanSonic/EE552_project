@@ -52,7 +52,7 @@ module switch_tb;
             Out[3].Receive(packet1);
         join
         
-        $display("Packet with the destination 0010 sent with the address 0101 input from the North and Received by out %b. The received value = %b", in_type , packet1);
+        $display("Packet with the destination 0010 sent with the address 0101 input from the North and Received by out[%d]. The received value = %b", , packet1);
     
         #5;
         In[1].Send(packet);
@@ -63,7 +63,7 @@ module switch_tb;
             Out[7].Receive(packet2);
         join
         
-        $display("Packet with the destination 0010 sent with the address 0101 input from the East and Received by %d. The receive value = %b", in_type, packet2);
+        $display("Packet with the destination 0010 sent with the address 0101 input from the East and Received by out[%d]. The received value = %b",  , packet2);
     
         #5;
         In[2].Send(packet);
@@ -74,7 +74,7 @@ module switch_tb;
             Out[11].Receive(packet3);
         join
         
-        $display("Packet with the destination 0010 sent with the address 0101 input from the South and Received by %d. The receive value = %b", in_type, packet3);
+        $display("Packet with the destination 0010 sent with the address 0101 input from the South and Received by out[%d]. The received value = %b",  , packet3);
         #5;
         In[3].Send(packet);
         fork
@@ -84,7 +84,7 @@ module switch_tb;
             Out[15].Receive(packet4);
         join
         
-        $display("Packet with the destination 0010 sent with the address 0101 input from the West and Received by %d. The receive value = %b", in_type, packet4);
+        $display("Packet with the destination 0010 sent with the address 0101 input from the West and Received by out[%d]. The received value = %b",  , packet4);
     
         #5;
         In[4].Send(packet);
@@ -95,6 +95,6 @@ module switch_tb;
             Out[19].Receive(packet5);
         join
         
-        $display("Packet with the destination 0010 sent with the address 0101 input from the PE and Received by %d. The receive value = %b", in_type, packet5);
+        $display("Packet with the destination 0010 sent with the address 0101 input from the PE and Received by out[%d]. The received value = %b",   , packet5);
     end  
 endmodule

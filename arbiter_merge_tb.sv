@@ -8,6 +8,9 @@ module arbiter_merge_tb();
     Channel #(.hsProtocol(P4PhaseBD),.WIDTH(33)) R1();
     Channel #(.hsProtocol(P4PhaseBD),.WIDTH(33)) R2();
     Channel #(.hsProtocol(P4PhaseBD),.WIDTH(33))  O();
+    //Channel #(.hsProtocol(P4PhaseBD),.WIDTH(33))  db();
+    
+        
     
     parameter WIDTH = 33;
     parameter FL = 2;
@@ -20,46 +23,35 @@ module arbiter_merge_tb();
     integer k;
     
     arbiter_merge_two #(.WIDTH(33), .FL(FL), .BL(BL)) abmg(.R1(R1), .R2(R2), .O(O));
+    data_bucket db(.r(O));
     
     initial
         begin
 
         $display("Testing for Input R1");
-        data_R1 = $random()%64;
-        data_R2 = $random()%64;
+        data_R1 = $random()% 16;
         #10; 
-        fork
-            R1.Send(data_R1);
-            O.Receive(out);
-        join
-        $display("R1 = %d, R2 = %d, Out = %d", data_R1, data_R2, out);	
-
+        R1.Send(data_R1);   
+        #20;
 
       $display("Testing for Input R2");
-            data_R1 = $random()%64;
-            data_R2 = $random()%64;
-            #10; 
-            fork
-                R2.Send(data_R2);
-                O.Receive(out);
-            join
-            $display("R1 = %d, R2 = %d, Out = %d", data_R1, data_R2, out);
+      data_R2 = $random()% 16;
+      #10; 
+      R2.Send(data_R2);
+      #20;
       
       $display("Testing for Random Input");
       
       k = 0;
-      while(k < 15)
+      while(k < 30)
         begin
-            data_R1 = $random()%64;
-            data_R2 = $random()%64;
+            data_R1 = $random()% 16;
+            data_R2 = $random()% 16;
             #5; 
             fork
                R1.Send(data_R1);
                R2.Send(data_R2);
-               O.Receive(out);
             join
-            O.Receive(winner);
-            $display("R1 = %d, R2 = %d, 1st Out = %d, 2nd Out = %d", data_R1, data_R2, out, winner);
             k++;
         end
      end

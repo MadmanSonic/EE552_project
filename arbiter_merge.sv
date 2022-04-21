@@ -6,10 +6,9 @@ module arbiter_merge_two(Channel R1, Channel R2, Channel O);
 
     parameter WIDTH = 33;
     parameter FL = 2;
-    parameter BL = 2;
-    logic [WIDTH-1: 0] data_R1, data_R2;
+    parameter BL = 1;
    
-    Channel #(.hsProtocol(P4PhaseBD),.WIDTH(1)) S1();
+    Channel #(.hsProtocol(P4PhaseBD)) S1();
     
     //arbiter(R1,R2, O)
     arbiter #(.WIDTH(WIDTH), .FL(FL), .BL(BL)) two_ab(.R1(R1), .R2(R2), .O(S1));
@@ -17,6 +16,20 @@ module arbiter_merge_two(Channel R1, Channel R2, Channel O);
     //merge(A,B,S,O)
     merge #(.WIDTH(WIDTH), .FL(FL), .BL(BL)) two_mg(.A(R1),.B(R2),.S(S1),.O(O));
        
+endmodule
+
+//Sample data_bucket module
+module data_bucket (Channel r);
+  parameter WIDTH = 8;
+  parameter BL = 0; //ideal environment
+  logic [WIDTH-1:0] ReceiveValue = 0;
+  always
+  begin
+    r.Receive(ReceiveValue);
+    $display("Out = %d", ReceiveValue);
+    #BL;
+  end
+
 endmodule
 
 /*module arbiter_merge_four(Channel A, Channel B, Channel C, Channel D, interface O);

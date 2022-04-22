@@ -91,7 +91,7 @@ module Filter_mem(interface filter_in, interface filter_out);
     mem[2] = data_filter[WIDTH*3 -1 : WIDTH*2];
     //$display("%m. mem = %d  %d  %d\n", mem[0], mem[1], mem[2]);
     for (i=0; i<3; i++)
-        begin
+        begin 
             filter_out.Send(mem[i]);
         end
     #BL;

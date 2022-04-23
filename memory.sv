@@ -80,6 +80,7 @@ module memory(Channel read, Channel write, Channel T, Channel x, Channel y, Chan
 	  end // fi for	 
 	  
 	  // Load spikes 
+	  //$readmemb("base_ifmaps_bin.mem", pre_ifmaps_mem);
 	  $readmemb("base_ifmaps_bin.mem", pre_ifmaps_mem);
 	  
 	  for (ift = 0; ift < timesteps;++ift) begin 

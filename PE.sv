@@ -208,12 +208,12 @@ module compare(interface L, R);
         $display("%m receive = %d at %d \n",data, $time);
         #FL;
 		compare_data =compare_data + data;
-        if(compare_data >VT)
+	    if(compare_data >= VT)
             begin
             out = {1'b1};
             compare_data = compare_data - VT;
             end
-        else if (compare_data <= VT)
+        else if (compare_data < VT)
             begin
             out = {1'b0};
             end

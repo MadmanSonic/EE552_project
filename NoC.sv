@@ -1,40 +1,21 @@
 `timescale 1ns / 1ps
+import SystemVerilogCSP::*;
 
-module NoC(Channel PE0_in, Channel PE1_in, Channel PE2_in, Channel PE3_in, Channel PE4_in,Channel PE5_in, Channel PE6_in, Channel PE7_in, Channel PE8_in,
-           Channel R1_in, Channel R2_in, Channel R3_in, Channel R4_in, Channel R5_in,Channel R6_in, Channel R7_in, Channel R8_in, Channel R9_in, Channel R10_in, Channel R11_in, Channel R12_in,
-           Channel PE0_out, Channel PE1_out, Channel PE2_out, Channel PE3_out, Channel PE4_out,Channel PE5_out, Channel PE6_out, Channel PE7_out, Channel PE8_out,
-           Channel R1_out, Channel R2_out, Channel R3_out, Channel R4_out, Channel R5_out,Channel R6_out, Channel R7_out, Channel R8_out, Channel R9_out, Channel R10_out, Channel R11_out, Channel R12_out,
-           Channel wrapper_in, Channel wrapper_out, Channel memory_in, Channel memory_out); 
-   
-   parameter FL = 2;
-   parameter BL = 1;
-   parameter WIDTH = 33;
-   
-   Channel #(.hsProtocol(P4PhaseBD), .WIDTH(WIDTH)) CH[26:0] ();
-   
-   //Router(N_in, E_in, S_in, W_in, PE_in, N_out, E_out, S_out, W_out, PE_out)
-   
-   //1st row, left router [0000]
-   router #(.WIDTH(WIDTH), .FL(FL), .BL(BL), .address_0(0), .address_1(0), .address_2(0), .address_3(0)) PE0_router(.N_in(R5_in), .E_in(R1_in), .S_in(CH[0]), .W_in(CH[1]), .PE_in(PE0_in), .N_out(R5_out), .E_out(R1_out), .S_out(CH[2]), .W_out(CH[3]), .PE_out(PE0_out));                                                                                                                       
-   //1st row, middle router [0100]
-   router #(.WIDTH(WIDTH), .FL(FL), .BL(BL), .address_0(0), .address_1(0), .address_2(1), .address_3(0)) PE1_router(.N_in(R4_in), .E_in(R2_in), .S_in(CH[4]), .W_in(R1_in), .PE_in(PE1_in), .N_out(R4_out), .E_out(R2_out), .S_out(CH[5]), .W_out(R1_out), .PE_out(PE1_out));
-   //1st row, right router [1000]
-   router #(.WIDTH(WIDTH), .FL(FL), .BL(BL), .address_0(0), .address_1(0), .address_2(0), .address_3(1)) PE2_router(.N_in(R3_in), .E_in(CH[6]), .S_in(CH[7]), .W_in(R2_in), .PE_in(PE2_in), .N_out(R3_out), .E_out(CH[8]), .S_out(CH[9]), .W_out(R2_out), .PE_out(PE2_out));
-   
-   //2nd row, left router [0001]
-   router #(.WIDTH(WIDTH), .FL(FL), .BL(BL), .address_0(1), .address_1(0), .address_2(0), .address_3(0)) PE3_router(.N_in(R10_in), .E_in(R6_in), .S_in(R5_in), .W_in(CH[10]), .PE_in(PE3_in), .N_out(R10_out), .E_out(R6_out), .S_out(R5_out), .W_out(CH[11]), .PE_out(PE3_out));                                                                                                                                                                                                                                                                                                                                                                                    
-   //2nd row, middle router [0101]
-   router #(.WIDTH(WIDTH), .FL(FL), .BL(BL), .address_0(0), .address_1(1), .address_2(0), .address_3(1)) PE4_router(.N_in(R9_in), .E_in(R7_in), .S_in(R4_in), .W_in(R6_in), .PE_in(PE4_in), .N_out(R9_out), .E_out(R7_out), .S_out(R4_out), .W_out(R6_out), .PE_out(PE4_out));
-   //2nd row, right router [1001]
-   router #(.WIDTH(WIDTH), .FL(FL), .BL(BL), .address_0(1), .address_1(0), .address_2(0), .address_3(1)) PE5_router(.N_in(R8_in), .E_in(wrapper_in), .S_in(R3_in), .W_in(R7_in), .PE_in(PE5_in), .N_out(R8_out), .E_out(wrapper_out), .S_out(R3_out), .W_out(R7_out), .PE_out(PE5_out));
-   
-   //3rd row, left router [0010]
-   router #(.WIDTH(WIDTH), .FL(FL), .BL(BL), .address_0(0), .address_1(1), .address_2(0), .address_3(0)) PE6_router(.N_in(CH[12]), .E_in(R11_in), .S_in(R10_in), .W_in(CH[13]), .PE_in(PE6_in), .N_out(CH[14]), .E_out(R11_out), .S_out(R10_out), .W_out(CH[15]), .PE_out(PE6_out));                                                                                                                                                                                                                                  
-   //3rd row, middle router [0110]
-   router #(.WIDTH(WIDTH), .FL(FL), .BL(BL), .address_0(0), .address_1(1), .address_2(1), .address_3(0)) PE7_router(.N_in(CH[16]), .E_in(R12_in), .S_in(R9_in), .W_in(R11_in), .PE_in(PE7_in), .N_out(CH[17]), .E_out(R12_out), .S_out(R9_out), .W_out(R11_out), .PE_out(PE7_out));
-   //3rd row, right router [1010]
-   router #(.WIDTH(WIDTH), .FL(FL), .BL(BL), .address_0(0), .address_1(1), .address_2(0), .address_3(1)) PE8_router(.N_in(CH[18]), .E_in(CH[19]), .S_in(R8_in), .W_in(R12_in), .PE_in(PE8_in), .N_out(CH[20]), .E_out(CH[21]), .S_out(R8_out), .W_out(R12_out), .PE_out(PE8_out));
-   
-   //Memory Wrapper [1101]
-   router #(.WIDTH(WIDTH), .FL(FL), .BL(BL), .address_0(1), .address_1(0), .address_2(1), .address_3(1)) wrap_router(.N_in(CH[22]), .E_in(memory_in), .S_in(CH[23]), .W_in(wrapper_in), .PE_in(CH[24]), .N_out(CH[25]), .E_out(memory_out), .S_out(CH[26]), .W_out(wrapper_out), .PE_out(CH[27]));                                                                                                                 
+module NoC (interface PE_0010_i, PE_0110_i, PE_1010_i, PE_0001_i, PE_0101_i, PE_1001_i, PE_0000_i, PE_0100_i, PE_1000_i, memblock_i, PE_0010_o, PE_0110_o, PE_1010_o, PE_0001_o, PE_0101_o, PE_1001_o, PE_0000_o, PE_0100_o, PE_1000_o, memblock_o);
+
+    Channel #(.hsProtocol(P4PhaseBD), .WIDTH(33)) intf  [45:0] (); 
+    
+    router #(.address_X(2'b00), .address_Y(2'b10)) R0010(.in_left(intf[0]), .in_right(intf[2]), .in_up(intf[4]), .in_down(intf[6]), .in_pe(PE_0010_i), .out_left(intf[1]), .out_right(intf[3]), .out_up(intf[5]), .out_down(intf[7]), .out_pe(PE_0010_o));
+    router #(.address_X(2'b01), .address_Y(2'b10)) R0110(.in_left(intf[3]), .in_right(intf[8]), .in_up(intf[10]), .in_down(intf[12]), .in_pe(PE_0110_i), .out_left(intf[2]), .out_right(intf[9]), .out_up(intf[11]), .out_down(intf[13]), .out_pe(PE_0110_o));
+    router #(.address_X(2'b10), .address_Y(2'b10)) R1010(.in_left(intf[9]), .in_right(intf[14]), .in_up(intf[16]), .in_down(intf[18]), .in_pe(PE_1010_i), .out_left(intf[8]), .out_right(intf[15]), .out_up(intf[17]), .out_down(intf[19]), .out_pe(PE_1010_o));
+    router #(.address_X(2'b00), .address_Y(2'b01)) R0001(.in_left(intf[20]), .in_right(intf[22]), .in_up(intf[7]), .in_down(intf[24]), .in_pe(PE_0001_i), .out_left(intf[21]), .out_right(intf[23]), .out_up(intf[6]), .out_down(intf[25]), .out_pe(PE_0001_o));
+    router #(.address_X(2'b01), .address_Y(2'b01)) R0101(.in_left(intf[23]), .in_right(intf[26]), .in_up(intf[13]), .in_down(intf[28]), .in_pe(PE_0101_i), .out_left(intf[22]), .out_right(intf[27]), .out_up(intf[12]), .out_down(intf[29]), .out_pe(PE_0101_o));
+    router #(.address_X(2'b10), .address_Y(2'b01)) R1001(.in_left(intf[27]), .in_right(memblock_i), .in_up(intf[19]), .in_down(intf[30]), .in_pe(PE_1001_i), .out_left(intf[26]), .out_right(memblock_o), .out_up(intf[18]), .out_down(intf[31]), .out_pe(PE_1001_o));
+    router #(.address_X(2'b00), .address_Y(2'b00)) R0000(.in_left(intf[32]), .in_right(intf[34]), .in_up(intf[25]), .in_down(intf[36]), .in_pe(PE_0000_i), .out_left(intf[33]), .out_right(intf[35]), .out_up(intf[24]), .out_down(intf[37]), .out_pe(PE_0000_o));
+    router #(.address_X(2'b01), .address_Y(2'b00)) R0100(.in_left(intf[35]), .in_right(intf[38]), .in_up(intf[29]), .in_down(intf[40]), .in_pe(PE_0100_i), .out_left(intf[34]), .out_right(intf[39]), .out_up(intf[28]), .out_down(intf[41]), .out_pe(PE_0100_o));
+    router #(.address_X(2'b10), .address_Y(2'b00)) R1000(.in_left(intf[39]), .in_right(intf[42]), .in_up(intf[31]), .in_down(intf[44]), .in_pe(PE_1000_i), .out_left(intf[38]), .out_right(intf[43]), .out_up(intf[30]), .out_down(intf[45]), .out_pe(PE_1000_o));
+
+//router (interface in_left,interface in_right,interface in_up,interface in_down,interface in_pe,interface out_left,interface out_right,interface out_up,interface out_down,interface out_pe );
+
+
 endmodule

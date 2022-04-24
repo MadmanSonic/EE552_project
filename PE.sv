@@ -188,7 +188,7 @@ module split (interface L, interface S, interface R1, interface R2 );//R1 to com
                  //L.Receive(data);
                  R1.Send(data);
                 end
-            default: $display("worng control value");
+		default: $display("wrong control value");
         endcase
         #BL;
     end
